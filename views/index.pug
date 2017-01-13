@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h2 Request information
+  p Page view count:
+  if pageCountMessage
+     <span class="code" id="count-value">pageCountMessage</span>
+      div.code
+        h3 DB Connection Info:
+        table(style='margin-left: 20px')
+            tr
+              td Type:
+              td dbInfo.type
+            tr
+              td URL:
+              td dbInfo.url
+  else
+     <span class="code" id="count-value">No database configured</span>

@@ -1,14 +1,19 @@
 'use strict'
 //  OpenShift sample Node application
 const express = require('express')
+const bodyParser = require('body-parser')
+const path = require('path')
 const app = express()
-const ejs = require('ejs')
-const morgan = require('morgan')
 
 Object.assign = require('object-assign')
 
-app.engine('html', ejs.renderFile)
-app.use(morgan('combined'))
+// view engine setup
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'pug')
+
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+app.use(express.static(path.join(__dirname, 'public')))
 
 const port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080
 const ip = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0'
@@ -70,10 +75,10 @@ app.get('/', function (req, res) {
     col.count(function (err, count) {
       if (err) console.log(`Error`)
 
-      res.render('index.html', { pageCountMessage: count, dbInfo: dbDetails })
+      res.render('index', { pageCountMessage: count, dbInfo: dbDetails })
     })
   } else {
-    res.render('index.html', { pageCountMessage: null })
+    res.render('index', { pageCountMessage: null })
   }
 })
 
